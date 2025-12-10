@@ -1,4 +1,4 @@
-import { getSecret } from '../../utils/vault';
+import { getSecret } from '../../../utils/vault';
 import crypto from 'crypto';
 
 /**

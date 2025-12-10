@@ -1,5 +1,5 @@
 import AdminLayout from "../../components/admin/AdminLayout";
-import { Page, Layout, Card, TextContainer, DisplayText, Grid } from "@shopify/polaris";
+import { Page, Layout, Card, TextContainer, Text, Grid } from "@shopify/polaris";
 import { useEffect, useState } from "react";
 
 export default function AdminDashboard() {
@@ -19,22 +19,22 @@ export default function AdminDashboard() {
                         <Grid>
                             <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 3, xl: 3 }}>
                                 <Card sectioned title="Total Merchants">
-                                    <DisplayText size="medium">{data.stats.total_merchants}</DisplayText>
+                                    <Text variant="headingLg" as="p">{data.stats.total_merchants}</Text>
                                 </Card>
                             </Grid.Cell>
                             <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 3, xl: 3 }}>
                                 <Card sectioned title="Active Merchants">
-                                    <DisplayText size="medium">{data.stats.active_merchants}</DisplayText>
+                                    <Text variant="headingLg" as="p">{data.stats.active_merchants}</Text>
                                 </Card>
                             </Grid.Cell>
                             <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 3, xl: 3 }}>
                                 <Card sectioned title="Jobs Today">
-                                    <DisplayText size="medium">{data.stats.jobs_today}</DisplayText>
+                                    <Text variant="headingLg" as="p">{data.stats.jobs_today}</Text>
                                 </Card>
                             </Grid.Cell>
                             <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 3, xl: 3 }}>
                                 <Card sectioned title="System Health">
-                                    <DisplayText size="medium" tone="success">{data.stats.system_health}</DisplayText>
+                                    <Text variant="headingLg" as="p" tone="success">{data.stats.system_health}</Text>
                                 </Card>
                             </Grid.Cell>
                         </Grid>
