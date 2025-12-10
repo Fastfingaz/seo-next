@@ -20,6 +20,36 @@ const landingPageQuery = `*[_type == "landingPage"][0]{
   faq
 }`;
 
+// --- Mock AI Logic ---
+function generateMockSEO(input) {
+    const term = input.toLowerCase();
+    let text = "Transform your daily routine with this premium product. Built for durability and style, it meets the highest standards of quality.";
+    let emoji = "✨";
+
+    if (term.includes("watch") || term.includes("clock") || term.includes("time")) {
+        text = "Elevate your style with this masterpiece of engineering. Featuring scratch-resistant sapphire crystal and a genuine leather strap, this timepiece defines modern elegance.";
+        emoji = "⌚";
+    } else if (term.includes("boot") || term.includes("shoe") || term.includes("sneaker")) {
+        text = "Command attention with these military-grade leather boots. Featuring triple-stitched seams and a slip-resistant sole, these are built for urban exploration.";
+        emoji = "👢";
+    } else if (term.includes("coffee") || term.includes("mug") || term.includes("cup")) {
+        text = "Start your morning right with our artisanal ceramic mug. Heat-retentive glaze and an ergonomic handle make every sip a moment of pure bliss.";
+        emoji = "☕";
+    } else if (term.includes("bag") || term.includes("backpack") || term.includes("purse")) {
+        text = "Carry your essentials in style. Crafted from sustainable canvas with reinforced stitching, this bag combines vintage aesthetics with modern utility.";
+        emoji = "🎒";
+    } else if (term.includes("phone") || term.includes("tech") || term.includes("gadget")) {
+        text = "Experience next-gen performance. With sleek aluminum casing and rapid-response sensors, this device keeps you connected when it matters most.";
+        emoji = "📱";
+    }
+
+    return {
+        title: `[Premium] ${input} - Handcrafted Excellence`,
+        description: text,
+        icon: emoji
+    };
+}
+
 export async function getStaticProps() {
     const data = await client.fetch(landingPageQuery);
     return {
@@ -80,10 +110,8 @@ export default function LandingPage({ data }) {
     const handleDemoGenerate = () => {
         setLoading(true);
         setTimeout(() => {
-            setDemoResult({
-                title: `[Premium] ${demoInput || "Luxury Watch"} - Handcrafted Excellence`,
-                description: "Elevate your style with this masterpiece of engineering. Featuring scratch-resistant sapphire crystal and a genuine leather strap, this timepiece defines modern elegance."
-            });
+            const result = generateMockSEO(demoInput || "Luxury Watch");
+            setDemoResult(result);
             setLoading(false);
         }, 1500);
     };
@@ -250,7 +278,7 @@ export default function LandingPage({ data }) {
                                                 <div className="text-xs text-indigo-400 font-mono mt-1">SEO Score: 98/100</div>
                                             </div>
                                             <div className="bg-white p-2 rounded-lg shadow-sm">
-                                                <span className="text-2xl">👢</span>
+                                                <span className="text-2xl">{demoResult ? demoResult.icon : "👢"}</span>
                                             </div>
                                         </div>
                                         <p className="text-slate-600 text-sm leading-relaxed">
