@@ -1,0 +1,11 @@
+{
+    "name": "seo-next",
+    "version": "1.0.0",
+    "type": "module",
+    "dependencies": {
+        "next": "latest",
+        "react": "latest",
+        "react-dom": "latest",
+        "@shopify/polaris": "latest"
+    }
+}
