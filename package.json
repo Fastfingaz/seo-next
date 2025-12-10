@@ -9,9 +9,10 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@shopify/polaris": "latest",
         "next": "latest",
+        "next-sanity": "^11.6.10",
         "react": "latest",
-        "react-dom": "latest",
-        "@shopify/polaris": "latest"
+        "react-dom": "latest"
     }
 }
