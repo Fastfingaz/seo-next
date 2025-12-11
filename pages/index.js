@@ -21,32 +21,81 @@ const landingPageQuery = `*[_type == "landingPage"][0]{
 }`;
 
 // --- Mock AI Logic ---
+// --- Mock AI Logic ---
 function generateMockSEO(input) {
-    const term = input.toLowerCase();
-    let text = "Transform your daily routine with this premium product. Built for durability and style, it meets the highest standards of quality.";
-    let emoji = "✨";
+    const term = (input || "").toLowerCase();
 
-    if (term.includes("watch") || term.includes("clock") || term.includes("time")) {
-        text = "Elevate your style with this masterpiece of engineering. Featuring scratch-resistant sapphire crystal and a genuine leather strap, this timepiece defines modern elegance.";
-        emoji = "⌚";
-    } else if (term.includes("boot") || term.includes("shoe") || term.includes("sneaker")) {
-        text = "Command attention with these military-grade leather boots. Featuring triple-stitched seams and a slip-resistant sole, these are built for urban exploration.";
-        emoji = "👢";
-    } else if (term.includes("coffee") || term.includes("mug") || term.includes("cup")) {
-        text = "Start your morning right with our artisanal ceramic mug. Heat-retentive glaze and an ergonomic handle make every sip a moment of pure bliss.";
-        emoji = "☕";
-    } else if (term.includes("bag") || term.includes("backpack") || term.includes("purse")) {
-        text = "Carry your essentials in style. Crafted from sustainable canvas with reinforced stitching, this bag combines vintage aesthetics with modern utility.";
-        emoji = "🎒";
-    } else if (term.includes("phone") || term.includes("tech") || term.includes("gadget")) {
-        text = "Experience next-gen performance. With sleek aluminum casing and rapid-response sensors, this device keeps you connected when it matters most.";
-        emoji = "📱";
+    // Define categories with specific logic
+    const categories = {
+        watch: {
+            keywords: ['watch', 'clock', 'time', 'rolex', 'seamless', 'chronograph'],
+            suffix: "Premium Automatic Movement",
+            desc: "Elevate your style with this masterpiece of engineering. Featuring scratch-resistant sapphire crystal and a precision movement, this timepiece defines modern elegance.",
+            icon: "⌚"
+        },
+        fashion: {
+            keywords: ['shirt', 'dress', 'jean', 'pant', 'coat', 'jacket', 'hoodie', 'cloth', 'wear', 'apparel'],
+            suffix: "Sustainable Cotton Blend",
+            desc: "Experience unmatched comfort with our signature fabric blend. Designed for breathability and durability, this piece is a versatile staple for any wardrobe.",
+            icon: "👕"
+        },
+        footwear: {
+            keywords: ['shoe', 'boot', 'sneaker', 'sandal', 'heel', 'runner', 'trainer'],
+            suffix: "Orthopedic Comfort Sole",
+            desc: "Walk on clouds with our advanced ergonomic design. Featuring shock-absorbing soles and reinforced stitching, these are built for all-day support.",
+            icon: "👟"
+        },
+        tech: {
+            keywords: ['phone', 'laptop', 'computer', 'mouse', 'keyboard', 'headphone', 'earbud', 'charger', 'usb', 'smart', 'tech'],
+            suffix: "High-Performance Series",
+            desc: "Experience next-gen performance. With ultra-low latency and a sleek aluminum chassis, this device is engineered for power users who demand the best.",
+            icon: "💻"
+        },
+        beauty: {
+            keywords: ['cream', 'oil', 'serum', 'lipstick', 'makeup', 'skin', 'face', 'lotion', 'balm'],
+            suffix: "Dermatologist Tested",
+            desc: "Reveal your natural radiance. Our vegan, cruelty-free formula deeply hydrates and rejuvenates, leaving a healthy glow without varying textures.",
+            icon: "💄"
+        },
+        food: {
+            keywords: ['coffee', 'tea', 'snack', 'food', 'drink', 'chocolate', 'bean', 'mug', 'cup'],
+            suffix: "Artisanal Small Batch",
+            desc: "Taste the difference of ethically sourced ingredients. Rich, bold, and perfectly balanced, every batch is crafted to deliver a moment of pure bliss.",
+            icon: "☕"
+        },
+        home: {
+            keywords: ['chair', 'table', 'couch', 'sofa', 'desk', 'lamp', 'light', 'bed', 'pillow', 'decor'],
+            suffix: "Modern Minimalist Design",
+            desc: "Transform your living space. Blending form and function, this piece uses premium materials to create a warm, inviting atmosphere in any room.",
+            icon: "🏠"
+        }
+    };
+
+    // Detect category
+    let match = null;
+    for (const [key, cat] of Object.entries(categories)) {
+        if (cat.keywords.some(k => term.includes(k))) {
+            match = cat;
+            break;
+        }
     }
 
+    // Fallback for unknown items
+    const fallback = {
+        suffix: "Premium Quality Edition",
+        desc: `Upgrade your collection with the best-selling ${input}. Verified for durability and rated 5-stars by customers worldwide. Fast shipping available.`,
+        icon: "✨"
+    };
+
+    const selected = match || fallback;
+
+    // Capitalize Input for Title
+    const titleInput = input ? (input.charAt(0).toUpperCase() + input.slice(1)) : "Product";
+
     return {
-        title: `[Premium] ${input} - Handcrafted Excellence`,
-        description: text,
-        icon: emoji
+        title: `[Best Seller] ${titleInput} - ${selected.suffix}`,
+        description: selected.desc,
+        icon: selected.icon
     };
 }
 
@@ -134,7 +183,7 @@ export default function LandingPage({ data }) {
 
                     <nav className="hidden md:flex gap-8 items-center text-sm font-medium">
                         {/* Text color conditional based on hero bg visibility */}
-                        <a href="#features" className={`hover:text-indigo-500 transition ${scrolled ? 'text-slate-600' : 'text-slate-200'}`}>Features</a>
+                        <a href="#benefits" className={`hover:text-indigo-500 transition ${scrolled ? 'text-slate-600' : 'text-slate-200'}`}>Benefits</a>
                         <a href="#demo" className={`hover:text-indigo-500 transition ${scrolled ? 'text-slate-600' : 'text-slate-200'}`}>Live Demo</a>
                         <a href="#pricing" className={`hover:text-indigo-500 transition ${scrolled ? 'text-slate-600' : 'text-slate-200'}`}>Pricing</a>
                         <a href="#faq" className={`hover:text-indigo-500 transition ${scrolled ? 'text-slate-600' : 'text-slate-200'}`}>FAQ</a>
@@ -192,10 +241,10 @@ export default function LandingPage({ data }) {
             </section>
 
             {/* --- FEATURES GRID --- */}
-            <section id="features" className="py-24 bg-white">
+            <section id="benefits" className="py-24 bg-white">
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="text-center mb-20">
-                        <h2 className="text-indigo-600 font-bold tracking-wide uppercase text-sm mb-3">Powerful Features</h2>
+                        <h2 className="text-indigo-600 font-bold tracking-wide uppercase text-sm mb-3">Core Benefits</h2>
                         <h3 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6">Everything you need to rank #1</h3>
                         <p className="text-xl text-slate-500 max-w-2xl mx-auto">Our toolkit replaces 5 different apps. Get analysis, writing, and compliance in one.</p>
                     </div>
@@ -390,7 +439,7 @@ export default function LandingPage({ data }) {
                     <div>
                         <h4 className="text-white font-bold mb-6">Product</h4>
                         <ul className="space-y-3">
-                            <li><a href="#features" className="hover:text-indigo-400 transition">Features</a></li>
+                            <li><a href="#benefits" className="hover:text-indigo-400 transition">Benefits</a></li>
                             <li><a href="#pricing" className="hover:text-indigo-400 transition">Pricing</a></li>
                             <li><a href="#" className="hover:text-indigo-400 transition">Changelog</a></li>
                             <li><a href="#" className="hover:text-indigo-400 transition">Integrations</a></li>
